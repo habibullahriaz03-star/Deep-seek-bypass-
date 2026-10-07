@@ -1,244 +1,85 @@
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html lang="ps" dir="rtl">
 <head>
-
-  <meta charset="UTF-8" />
-
-  <title>🎬 Movie Downloader Tony Stark</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>د وسیلې امنیت ازموینه</title>
   <style>
-
-    * {
-
-      box-sizing: border-box;
-
-    }
-
-
-
     body {
-
-      margin: 0;
-
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-
-      color: #fff;
-
-      display: flex;
-
-      justify-content: center;
-
-      align-items: center;
-
-      height: 100vh;
-
+      font-family: system-ui, sans-serif;   /* د فونټ تنظیم */
+      background: #0f0f0f;                  /* تور شالید */
+      color: #eee;                          /* روښانه متن */
+      padding: 20px;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
     }
-
-
-
-    .container {
-
-      background: rgba(255, 255, 255, 0.05);
-
-      border-radius: 20px;
-
-      padding: 40px 30px;
-
-      width: 100%;
-
-      max-width: 420px;
-
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-
-      backdrop-filter: blur(10px);
-
-      text-align: center;
-
+    h1 { color: #4fc3f7; text-align: center; }  /* د سرلیک رنګ */
+    .card {
+      background: #1a1a1a;                  /* د کارت شالید */
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
     }
-
-
-
-    h2 {
-
-      color: #00e676;
-
-      margin-bottom: 10px;
-
-      font-size: 28px;
-
-    }
-
-
-
-    p {
-
-      color: #ccc;
-
-      font-size: 16px;
-
-      margin-bottom: 20px;
-
-    }
-
-
-
-    #folderStatus {
-
-      color: #90ee90;
-
-      font-size: 14px;
-
-      margin: -10px 0 20px;
-
-    }
-
-
-
-    .button {
-
-      display: inline-block;
-
-      width: 100%;
-
-      padding: 14px;
-
-      margin-bottom: 15px;
-
-      background-color: #00e676;
-
+    .label { color: #888; font-size: 14px; } /* د لیبل رنګ */
+    .value { color: #4fc3f7; font-weight: bold; word-break: break-all; } /* ارزښت */
+    button {
+      background: #4fc3f7;                  /* د تڼۍ رنګ */
       color: #000;
-
-      font-weight: 600;
-
-      font-size: 16px;
-
       border: none;
-
-      border-radius: 10px;
-
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
-
-      transition: background-color 0.3s ease;
-
+      display: block;
+      margin: 20px auto;
     }
-
-
-
-    .button:hover {
-
-      background-color: #00c853;
-
-    }
-
-
-
-    #progressContainer {
-
-      margin-top: 20px;
-
-      text-align: left;
-
-      display: none;
-
-    }
-
-
-
-    .progress-bar {
-
-      width: 100%;
-
-      background-color: #333;
-
-      border-radius: 10px;
-
-      overflow: hidden;
-
-      height: 20px;
-
-    }
-
-
-
-    .progress-bar-fill {
-
-      background: #00e676;
-
-      height: 100%;
-
-      width: 0%;
-
-      transition: width 0.3s ease-in-out;
-
-    }
-
-
-
-    #progressText {
-
-      margin-top: 10px;
-
-      font-size: 14px;
-
-      color: #eee;
-
-    }
-
-
-
-    #fileInput {
-
-      display: none;
-
-    }
-
+    button:disabled { background: #555; cursor: not-allowed; } /* غیر فعال */
+    #status { text-align: center; color: #ffb74d; }            /* حالت */
   </style>
-
 </head>
-
 <body>
+  <h1>د وسیلې امنیت ازموینه</h1>
+  <p style="text-align:center;color:#888;">
+    دا پاڼه یوازې د خپل وسیله د معلوماتو د راټولولو لپاره ده.
+  </p>
 
-  <div class="container">
+  <button id="runBtn">ازموینه پیل کړه</button>
+  <div id="status"></div>
+  <div id="output"></div>
 
-    <h2>🎬 Movie Downloader</h2>
+  <script src="script.js"></script>       <!-- د سکریپټ وصل -->
+  <script>
+    // د تڼۍ کلیک — ازموینه چلوي
+    document.getElementById('runBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('runBtn');
+      const status = document.getElementById('status');
+      const out = document.getElementById('output');
 
-    <p>Select the folder where you want to download movies.</p>
+      btn.disabled = true;                 // تڼۍ غیر فعاله
+      status.textContent = '⏳ ازموینه روانه ده...';
+      out.innerHTML = '';                  // پخوانی پاکول
 
-    <button type="button" class="button" id="selectFolderBtn">📂 Select Folder</button>
+      try {
+        const report = await runSecurityAudit();  // د سکریپټ فنکشن
+        status.textContent = '✅ ازموینه بشپړه شوه';
 
-    <p id="folderStatus"></p>
-
-    <form id="uploadForm">
-
-      <input type="file" id="fileInput" webkitdirectory multiple required />
-
-      <button type="submit" class="button">Next ➡️</button>
-
-    </form>
-
-    <div id="progressContainer">
-
-      <div class="progress-bar">
-
-        <div class="progress-bar-fill" id="progressFill"></div>
-
-      </div>
-
-      <div id="progressText"></div>
-
-    </div>
-
-  </div>
-
-<script src="script.js"></script>
-
+        // د راپور ښودل
+        for (const [key, val] of Object.entries(report)) {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `<div class="label">${key}</div>
+                            <div class="value">${JSON.stringify(val)}</div>`;
+          out.appendChild(card);
+        }
+      } catch (err) {
+        status.textContent = '❌ خطا: ' + err.message;
+        console.error(err);
+      } finally {
+        btn.disabled = false;              // تڼۍ فعاله
+      }
+    });
+  </script>
 </body>
-
 </html>
-
